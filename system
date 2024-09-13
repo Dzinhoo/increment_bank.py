@@ -1,0 +1,142 @@
+from datetime import datetime, date
+
+
+
+menu = """
+
+
+
+[d] Depositar
+
+[s] Sacar
+
+[e] Extrato
+
+[q] Sair
+
+
+
+=> """
+
+
+
+saldo = 0
+
+limite = 500
+
+extrato = ""
+
+contagem_data = []
+
+LIMITE_TRANSACOES = 10
+
+data = date.today()
+
+data_hora = datetime.today().strftime("%d/%m/%Y %H:%M")
+
+
+
+while True:
+
+
+
+    opcao = input(menu)
+
+
+
+    if opcao == "d":
+
+        valor = float(input("Informe o valor do depósito: "))
+
+
+
+        if valor > 0 and contagem_data.count(data) < LIMITE_TRANSACOES:
+
+            saldo += valor
+
+            extrato += f"{data_hora} Depósito: R$ {valor:.2f}\n"
+
+            contagem_data.append(data)
+
+       
+
+        elif valor < 0:
+
+            print("Operação falhou! O valor informado é invalido")
+
+       
+
+        else:
+
+            print("Operação falhou! O número de 10 transações dia foi excedido.")
+
+
+
+    elif opcao == "s":
+
+        valor = float(input("Informe o valor do saque: "))
+
+        if valor > 0 and valor <= 500 and valor <= saldo and contagem_data.count(data) < LIMITE_TRANSACOES:
+
+            saldo -= valor
+
+            extrato += f"{data_hora} Saque: R$ {valor:.2f}\n"
+
+            contagem_data.append(data)
+
+
+
+        elif contagem_data.count(data) >= LIMITE_TRANSACOES:
+
+            print("Operação falhou! O número de 10 transações dia foi excedido.")
+
+
+
+        elif valor > 500:
+
+            print("Operação falhou! O valor do saque excede o limite.")
+
+
+
+        elif valor > saldo:
+
+            print("Operação falhou! Você não tem saldo suficiente.")
+
+
+
+        else:
+
+            print("Operação falhou! O valor informado é invalido")  
+
+
+
+    elif opcao == "e":
+
+        if contagem_data.count(data) < LIMITE_TRANSACOES:
+
+            print("\n===============EXTRATO=====================")
+
+            print("Não foram realizadas movimentações." if not extrato else extrato)
+
+            print(f"\nSaldo em {data_hora}: R${saldo:.2f}")
+
+            print("==============================================")
+
+            contagem_data.append(data)
+
+
+
+        else:
+
+            print("Operação falhou! O número de 10 transações dia foi excedido.")
+
+    elif opcao == "q":
+
+        break
+
+
+
+    else:
+
+        print("Operação inválida, por favor selecione novamente a operação desejada.")
+
